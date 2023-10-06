@@ -12,10 +12,10 @@ for iParameter = 1 : length(parameter_names)
     figure("Name",parameter_name);
     for iSide = 1 : length(sides)
         thisSide = sides{iSide};
-        nSubj = length(mean_curves.(parameter_name).(thisSide));
+        nSubj = size(mean_curves.(parameter_name).(thisSide),1);
 
         for iSubj = 1:nSubj
-            nCondition = width(mean_curves.(parameter_name).(thisSide));
+            nCondition = size(mean_curves.(parameter_name).(thisSide),2);
 
             for iCondition = 1:nCondition
 
@@ -27,10 +27,11 @@ for iParameter = 1 : length(parameter_names)
                 hold on
                 title(['Condition',num2str(iCondition)])
                 sgtitle('LEFT                   RIGHT')
-
+                legend(string(1:nSubj))
            end
         end
     end
+    
 %     AllYLim = get(ax, 'YLim');
 %     AllYLimValue = cell2mat(AllYLim);
 %     newYLim = [min(min(AllYLimValue)), max(max(AllYLimValue))];

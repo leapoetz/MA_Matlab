@@ -5,7 +5,7 @@ subjNames = fieldnames(subjData);
 nSubj = numel(subjNames);
 fprintf('...start processing data...\n')
 
-for iSubj = 1:nSubj
+for iSubj = 2%1:nSubj
     conditions = fieldnames(subjData.(subjNames{iSubj}));
     nCondition = numel(conditions);
     fprintf(['...for ', subjNames{iSubj}, '\n'])
@@ -40,10 +40,12 @@ for iSubj = 1:nSubj
             % synchronize data
             settings.doPlot = 1; 
             data = synchData_WCU(data, settings);
+            settings.doPlot = 0; 
+%             data = synchData(data, settings);
 %             showRawData(data, [figureID,'...Synched'])
-            settings.doPlot = 0;
 
-            [cyles_to_analyze, n_cycles] = detectCycles(data, settings);
+            [cyles_to_analyze, n_cycles] = detectCycles_WCU(data, settings);
+%             [cyles_to_analyze, n_cycles] = detectCycles(data, settings);
             % add cycle parameter to data
             data.cycles = cyles_to_analyze; 
             data.nCycles = n_cycles; 

@@ -10,28 +10,36 @@ projectPath = pwd;
 initStructure(projectPath);
 settings = chooseSettings(projectPath); 
 
-%% load data
-redo = 0; % use redo if data folder was updated, else load current files 
+skipProcessing = 0; 
 
-if redo
-    subjData = loadAndCreateSubjData(settings); 
+if skipProcessing
+%     load("data\interim\data_processed_WCU.mat")
+    load("data\interim\data_processed.mat")
 else
-%     load('data/raw_WCU/subjData.mat') % for group WCU (wheelchair users)
-    load('data/raw/subjData.mat') % for group AB (able-bodied)
+    %% load data
+    redo = 0; % use redo if data folder was updated, else load current files
+
+    if redo
+        subjData = loadAndCreateSubjData(settings);
+    else
+        load('data/raw_WCU/subjData.mat') % for group WCU (wheelchair users)
+%             load('data/raw/subjData.mat') % for group AB (able-bodied)
+    end
+
+    %% process data
+    data_processed = processData(subjData,settings);
 end
 
-%% process data
-data_processed = processData(subjData,settings); 
 
 %% calculate parameters
 
 % continous parameters
 [continous_parameters, cycles] = calcContinousParameters(data_processed, settings); 
-% plotControlCycles(continous_parameters, cycles, settings)
+plotControlCycles(continous_parameters, cycles, settings)
 
 % cycle parameters
 cycle_parameters = calcCycleParameters(continous_parameters, cycles, settings); 
-% plotEachTrial(cycle_parameters,'F_tot')
+plotEachTrial(cycle_parameters,'PFA_kinematic')
 
 % build means 
 results_curve_means = buildMeanCurves(cycle_parameters, settings); 

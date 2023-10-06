@@ -39,6 +39,17 @@ end
 % angle_vertical_right = 90 - angle_horizontal_right;
 % angle_vertical_left = 90 - angle_horizontal_left;
 
+% correct false angle data 
+% right
+[~, locs] = findpeaks(angle_horizontal_right,MinPeakHeight=89); 
+for iPeak = 1 : 2 : length(locs)-1
+    angle_horizontal_right(locs(iPeak):locs(iPeak+1)) = 180 - angle_horizontal_right(locs(iPeak):locs(iPeak+1)); 
+end 
+[~, locs] = findpeaks(angle_horizontal_left,MinPeakHeight=89); 
+for iPeak = 1 : 2 : length(locs)-1
+    angle_horizontal_left(locs(iPeak):locs(iPeak+1)) = 180 - angle_horizontal_left(locs(iPeak):locs(iPeak+1)); 
+end 
+
 PFA_kinematic.left = angle_horizontal_left;
 PFA_kinematic.right = angle_horizontal_right;
 

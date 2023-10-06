@@ -8,7 +8,7 @@ nSubj = numel(subjNames);
 
 sides = {'left', 'right'};
 
-for iSubj = 1:nSubj
+for iSubj = 2%1:nSubj
     conditions = fieldnames(continous_parameters.(subjNames{iSubj}));
     nCondition = numel(conditions);
     fprintf(['...for ', subjNames{iSubj}, '\n'])

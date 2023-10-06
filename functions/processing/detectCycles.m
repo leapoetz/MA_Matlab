@@ -151,21 +151,23 @@ end
 n_events = length(events_left); 
 n_cycles = n_events/2; 
 
-cycle_numbers = 1 : n_events; 
-cycles_to_analyse = cycle_numbers(3:n_events-2); % cut off first two and last two cycles
-if length(cycles_to_analyse) > 2
-    cycles_to_analyse = cycles_to_analyse(1:length(cycles_to_analyse)-2); 
+event_numbers = 1 : n_events; 
+events_to_analyze = event_numbers(5:n_events); % cut off first two and last two cycles
+if length(events_to_analyze) > 6
+    events_to_analyze = events_to_analyze(1:length(events_to_analyze)-2); 
 end 
 
 % create cycle intervals
 i_interval = 1;
-cycles_to_analyze_right = cell(length(cycles_to_analyse)/2,1);
-cycles_to_analyze_left = cell(length(cycles_to_analyse)/2,1);
+cycles_to_analyze_right = cell(length(events_to_analyze)/2,1);
+cycles_to_analyze_left = cell(length(events_to_analyze)/2,1);
 
-for i_event = 1 : 2 : length(cycles_to_analyse)-1
-    cycles_to_analyze_left{i_interval,:} = events_left{i_event,1}:events_left{i_event+1,1};
-    cycles_to_analyze_right{i_interval,:} = events_right{i_event,1}:events_right{i_event+1,1};
-    i_interval = i_interval + 1;
+if ~isempty(events_to_analyze)
+    for i_event = events_to_analyze(1) : 2 : events_to_analyze(end)
+        cycles_to_analyze_left{i_interval,:} = events_left{i_event,1}:events_left{i_event+1,1};
+        cycles_to_analyze_right{i_interval,:} = events_right{i_event,1}:events_right{i_event+1,1};
+        i_interval = i_interval + 1;
+    end
 end
 
 % save in variable 
