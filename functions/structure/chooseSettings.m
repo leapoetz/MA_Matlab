@@ -14,7 +14,7 @@ settings.threshold = 5; % N
 settings.height_pushrim = 290; % mm
 settings.offset_threshold = 2.2; % Nm 2.24
 settings.threshold_firstStart = 0.03;
-settings.threshold_synch = 10;
+settings.threshold_synch = 15;
 
 %% constants
 settings.radius = 0.257; %mm

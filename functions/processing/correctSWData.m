@@ -11,13 +11,13 @@ data_corrected = data;
 %     idx_max_right = idx_max_right + 30;
 % end
 
-% for iComponent = 1 : 3
-%     data_corrected.F_left(interval,iComponent) = data.F_left(interval,iComponent) - mean(data.F_left(interval,iComponent));
-%     data_corrected.M_left(interval,iComponent) = data.M_left(interval,iComponent) - mean(data.M_left(interval,iComponent));
-% 
-%     data_corrected.F_right(interval,iComponent) = data.F_right(interval,iComponent) - mean(data.F_right(interval,iComponent));
-%     data_corrected.M_right(interval,iComponent) = data.M_right(interval,iComponent) - mean(data.M_right(interval,iComponent));
-% end
+for iComponent = 1 : 3
+    data_corrected.F_left(interval,iComponent) = data.F_left(interval,iComponent) - mean(data.F_left(interval,iComponent));
+    data_corrected.M_left(interval,iComponent) = data.M_left(interval,iComponent) - mean(data.M_left(interval,iComponent));
+
+    data_corrected.F_right(interval,iComponent) = data.F_right(interval,iComponent) - mean(data.F_right(interval,iComponent));
+    data_corrected.M_right(interval,iComponent) = data.M_right(interval,iComponent) - mean(data.M_right(interval,iComponent));
+end
 
 
 end

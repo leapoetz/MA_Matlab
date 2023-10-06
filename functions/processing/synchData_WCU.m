@@ -1,4 +1,4 @@
-function data_synched = synchData(data, settings)
+function data_synched = synchData_WCU(data, settings)
 
 data_synched = data; 
 
@@ -18,11 +18,46 @@ n_frames = length(dataUsed_left);
 
 %% case 1: synch pulse was not performed correctly -> hands are already on the push rim when measurement was started
 
-if mean(data.LFIN2(1:100,3), "omitnan") < 700 && mean(data.RFIN2(1:100,3), "omitnan") < 700 % if hand is already on push rim 
+if mean(data.LFIN2(1:100,3), "omitnan") < 700 && mean(data.RFIN2(1:100,3), "omitnan") < 700 % if hand is already on push rim
 
-    % search for last contact to push rim 
-    start_kinematic_left = find(data.LFIN2(:,3) > (data.LWCENTRE(:,3)+settings.height_pushrim), 1, "first");
-    start_kinematic_right = find(data.RFIN2(:,3) > (data.RWCENTRE(:,3)+settings.height_pushrim), 1, "first");
+    % search for last contact to push rim
+    % LEFT
+    [~, locs] = findpeaks(data.LFIN2(1:data.start_dynamic,3),MinPeakHeight=850, MinPeakDistance=200);
+    if length(locs) == 2
+        interval = locs(1) : locs(2);
+    elseif length(locs) > 2
+        interval = locs(end-1) : locs(end);
+    elseif length(locs) == 1
+        interval = 1 : locs(1); 
+    end
+    start_kinematic_left = find(data.LFIN2(interval,3) < (data.LWCENTRE(interval,3)+settings.height_pushrim), 1, "last");
+    start_kinematic_left = start_kinematic_left + interval(1);
+    %         for i_frame = locs(1) : locs(2)
+    %             if data.LFIN2(i_frame,3) >= 700 && data.LFIN2(i_frame-1,3) <= 700
+    %                 while data.LFIN2(i_frame+1,3) >= data.LFIN2(i_frame,3) && i_frame < n_frames-1
+    %                     i_frame = i_frame - 1;
+    %                 end
+    %                 start_kinematic_left = i_frame;
+    %             end
+    %         end
+
+    [~, locs] = findpeaks(data.RFIN2(1:data.start_dynamic,3),MinPeakHeight=850, MinPeakDistance=200);
+    if length(locs) == 2
+        interval = locs(1) : locs(2);
+    elseif length(locs) > 2
+        interval = locs(end-1) : locs(end);
+    elseif length(locs) == 1
+        interval = 1 : locs(1);
+    end
+    start_kinematic_right = find(data.RFIN2(interval,3) < (data.RWCENTRE(interval,3)+settings.height_pushrim), 1, "last");
+    start_kinematic_right = start_kinematic_right + locs(1);
+
+
+
+
+
+%     start_kinematic_left = find(data.LFIN2(:,3) > (data.LWCENTRE(:,3)+settings.height_pushrim), 1, "first");
+%     start_kinematic_right = find(data.RFIN2(:,3) > (data.RWCENTRE(:,3)+settings.height_pushrim), 1, "first");
 
     % find last index with force application 
     % tried several approaches: inspired by Annika's algorithm

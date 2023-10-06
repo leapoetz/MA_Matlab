@@ -24,6 +24,14 @@ end
 
 end_dynamic = round(mean([idx_end_dynamic_left, idx_end_dynamic_right])); 
 
+% figure()
+% yyaxis left
+% plot(data.F_left(:,1))
+% hold on 
+% yyaxis right
+% plot(data.Speed_left)
+% xline(end_dynamic)
+% legend('Fx','Speed','Start')
 
 % change signs and make all positive
 parameters = fieldnames(data);

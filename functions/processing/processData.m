@@ -32,11 +32,16 @@ for iSubj = 1:nSubj
             % remove offset -> does not work yet 
             data = removeOffset(data, settings, (subjNames{iSubj}));
 
+%             showRawData(data, [figureID,'... removed'])
+
             % interpolate and filter data
             data = interpolateAndFilterData(data);
 
             % synchronize data
-            data = synchData(data, settings);
+            settings.doPlot = 1; 
+            data = synchData_WCU(data, settings);
+%             showRawData(data, [figureID,'...Synched'])
+            settings.doPlot = 0;
 
             [cyles_to_analyze, n_cycles] = detectCycles(data, settings);
             % add cycle parameter to data

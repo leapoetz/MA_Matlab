@@ -9,17 +9,17 @@ fprintf('...start calculating parameters...\n')
 sides = {'left', 'right'};
 
 
-for iSubj = 8 %:nSubj
+for iSubj = 1%:nSubj
     conditions = fieldnames(cont_parameters.(subjNames{iSubj}));
     nCondition = numel(conditions);
     fprintf(['...for ', subjNames{iSubj}, '\n'])
 
-    for iCondition = 1 %:nCondition
+    for iCondition = 1%:nCondition
         trials = fieldnames(cont_parameters.(subjNames{iSubj}).(conditions{iCondition}));
         nTrials = numel(trials);
         fprintf(['...for ', conditions{iCondition}, '\n'])
 
-        for iTrial = 1:nTrials
+        for iTrial = 1%:nTrials
             fprintf(['...for ', trials{iTrial}, '\n'])
 
             this_cont_parameters = cont_parameters.(subjNames{iSubj}).(conditions{iCondition}).(trials{iTrial});
@@ -27,7 +27,7 @@ for iSubj = 8 %:nSubj
 
             parameter_names = fieldnames(this_cont_parameters);
 
-            for iParameter = 1 : length(parameter_names)
+            for iParameter = 1 : 2%length(parameter_names)
                 parameter_name = parameter_names{iParameter};
 
                 for iSide = 1 : length(sides)

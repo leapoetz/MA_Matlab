@@ -34,13 +34,13 @@ end
 idx_start_dynamic = round(min([idx_start_right-1, idx_start_left-1])); 
 interval_static = 1:idx_start_dynamic-1; 
 
-% approach: differentiate between groups in handling the static phase 
-% if strcmp(VPNr,'VP10') || strcmp(VPNr,'VP11')
-% %     load("data\interim\Coefficients_Remove_Offset.mat")
-%     data_removed_offset = removeStaticOffset(data, settings, interval_static); 
-% else
-%     data_removed_offset = data; %correctSWData(data, interval_static); 
-% end 
+%approach: differentiate between groups in handling the static phase 
+if strcmp(VPNr,'VP10') || strcmp(VPNr,'VP11')
+%     load("data\interim\Coefficients_Remove_Offset.mat")
+    data_removed_offset = correctSWData(data, interval_static); %removeStaticOffset(data, settings, interval_static); 
+else
+    data_removed_offset = data; 
+end 
 
 %% DYNAMIC
 interval_dynamic = idx_start_dynamic:n_frames; 
@@ -153,5 +153,9 @@ f = f - q * A;
 
 data_removed_offset.F_right(interval_dynamic,:) = f(:,1:3);
 data_removed_offset.M_right(interval_dynamic,:) = f(:,4:6);
+
+%% add start dynamic parameter for later use
+data_removed_offset.start_dynamic = idx_start_dynamic; 
+
 
 end
