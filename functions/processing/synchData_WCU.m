@@ -17,9 +17,9 @@ end
 n_frames = length(dataUsed_left); 
 
 %% case 1: synch pulse was not performed correctly -> hands are already on the push rim when measurement was started
-
 if mean(data.LFIN2(1:100,3), "omitnan") < 700 && mean(data.RFIN2(1:100,3), "omitnan") < 700 % if hand is already on push rim
 
+    %% Kinematic
     % search for last contact to push rim
     % LEFT
     [~, locs] = findpeaks(data.LFIN2(1:data.start_dynamic,3),MinPeakHeight=850, MinPeakDistance=200);
@@ -28,19 +28,21 @@ if mean(data.LFIN2(1:100,3), "omitnan") < 700 && mean(data.RFIN2(1:100,3), "omit
     elseif length(locs) > 2
         interval = locs(end-1) : locs(end);
     elseif length(locs) == 1
-        interval = 1 : locs(1); 
+        interval = 1 : locs(1);
     end
-    start_kinematic_left = find(data.LFIN2(interval,3) < (data.LWCENTRE(interval,3)+settings.height_pushrim), 1, "last");
-    start_kinematic_left = start_kinematic_left + interval(1);
-    %         for i_frame = locs(1) : locs(2)
-    %             if data.LFIN2(i_frame,3) >= 700 && data.LFIN2(i_frame-1,3) <= 700
-    %                 while data.LFIN2(i_frame+1,3) >= data.LFIN2(i_frame,3) && i_frame < n_frames-1
-    %                     i_frame = i_frame - 1;
-    %                 end
-    %                 start_kinematic_left = i_frame;
-    %             end
-    %         end
+    %     start_kinematic_left = find(data.LFIN2(interval,3) < (data.LWCENTRE(interval,3)+settings.height_pushrim), 1, "last");
+    %       start_kinematic_left = start_kinematic_left + interval(1);
+    for i_frame = interval(1) + 1 : interval(end)
+        if data.LFIN2(i_frame,3) >= 700 && data.LFIN2(i_frame-1,3) <= 700
+            while data.LFIN2(i_frame+1,3) >= data.LFIN2(i_frame,3) && i_frame < n_frames-1
+                i_frame = i_frame - 1;
+            end
+            start_kinematic_left = i_frame;
+        end
+    end
+    
 
+    % RIGHT
     [~, locs] = findpeaks(data.RFIN2(1:data.start_dynamic,3),MinPeakHeight=850, MinPeakDistance=200);
     if length(locs) == 2
         interval = locs(1) : locs(2);
@@ -49,16 +51,19 @@ if mean(data.LFIN2(1:100,3), "omitnan") < 700 && mean(data.RFIN2(1:100,3), "omit
     elseif length(locs) == 1
         interval = 1 : locs(1);
     end
-    start_kinematic_right = find(data.RFIN2(interval,3) < (data.RWCENTRE(interval,3)+settings.height_pushrim), 1, "last");
-    start_kinematic_right = start_kinematic_right + locs(1);
+%     start_kinematic_right = find(data.RFIN2(interval,3) < (data.RWCENTRE(interval,3)+settings.height_pushrim), 1, "last");
+%     start_kinematic_right = start_kinematic_right + interval(1);
+    for i_frame = interval(1) + 1 : interval(end)
+        if data.RFIN2(i_frame,3) >= 700 && data.RFIN2(i_frame-1,3) <= 700
+            while data.RFIN2(i_frame+1,3) >= data.RFIN2(i_frame,3) && i_frame < n_frames-1
+                i_frame = i_frame - 1;
+            end
+            start_kinematic_right = i_frame;
+        end
+    end
 
 
-
-
-
-%     start_kinematic_left = find(data.LFIN2(:,3) > (data.LWCENTRE(:,3)+settings.height_pushrim), 1, "first");
-%     start_kinematic_right = find(data.RFIN2(:,3) > (data.RWCENTRE(:,3)+settings.height_pushrim), 1, "first");
-
+    %% Kinetic
     % find last index with force application 
     % tried several approaches: inspired by Annika's algorithm
 
@@ -70,13 +75,9 @@ if mean(data.LFIN2(1:100,3), "omitnan") < 700 && mean(data.RFIN2(1:100,3), "omit
 %             end
 
             % find point of time when force changes first time
-            while abs(diff([dataUsed_left(i_frame), dataUsed_left(i_frame+1)])) > 0.5 && i_frame < n_frames-1
+            while abs(diff([dataUsed_left(i_frame),dataUsed_left(i_frame+20)])) > 0.5 && i_frame < n_frames-1
                 i_frame = i_frame + 1;
             end 
-
-%             while dataUsed_left(i_frame) < -0.25 && i_frame < n_frames_final-1
-%                 i_frame = i_frame + 1;
-%             end
             start_kinetic_left = i_frame; % if first start was found, exit loop 
             break; 
         end
@@ -88,35 +89,48 @@ if mean(data.LFIN2(1:100,3), "omitnan") < 700 && mean(data.RFIN2(1:100,3), "omit
 %             while dataUsed_right(i_frame) >= dataUsed_right(i_frame+1) && i_frame < n_frames-1
 %                 i_frame = i_frame + 1;
 %             end
-            while abs(diff([dataUsed_left(i_frame), dataUsed_left(i_frame+1)])) > 0.5 && i_frame < n_frames-1
+            while abs(diff([dataUsed_right(i_frame),dataUsed_right(i_frame+20)])) > 0.5 && i_frame < n_frames-1
                 i_frame = i_frame + 1;
             end
-%             while dataUsed_right(i_frame) < -0.25 && i_frame < n_frames_final-1
-%                 i_frame = i_frame + 1;
-%             end
             start_kinetic_right = i_frame; 
             break; 
         end
     end
 
 %% case 2: normal synch pulse with hands starting in the air 
-
 else % normal synch pulse
 
+    %% Kinematic
     % searching for point when MPJ2 touches push rim first time -> estimating push rim with wheel axle
-    start_kinematic_left = find(data.LFIN2(:,3) < (data.LWCENTRE(:,3)+settings.height_pushrim), 1, "first");
-    start_kinematic_right = find(data.RFIN2(:,3) < (data.RWCENTRE(:,3)+settings.height_pushrim), 1, "first");
+%     start_kinematic_left = find(data.LFIN2(:,3) < (data.LWCENTRE(:,3)+settings.height_pushrim), 1, "first");
+    for i_frame = 1 : n_frames-1
+        if data.LFIN2(i_frame,3) >= 700 && data.LFIN2(i_frame+1,3) <= 700
+            while data.LFIN2(i_frame,3) >= data.LFIN2(i_frame+1,3) && i_frame < n_frames-1
+                i_frame = i_frame + 1;
+            end
+            start_kinematic_left = i_frame;
+            break
+        end
+    end
+%     start_kinematic_right = find(data.RFIN2(:,3) < (data.RWCENTRE(:,3)+settings.height_pushrim), 1, "first");
+    for i_frame = 1 : n_frames-1
+        if data.RFIN2(i_frame,3) >= 700 && data.RFIN2(i_frame+1,3) <= 700
+            while data.RFIN2(i_frame,3) >= data.RFIN2(i_frame+1,3) && i_frame < n_frames-1
+                i_frame = i_frame + 1;
+            end
+            start_kinematic_right = i_frame;
+            break
+        end
+    end
 
+    %% Kinetic
     % LEFT
     for i_frame = 2 : n_frames-1
         if dataUsed_left(i_frame-1) <= settings.threshold_synch && dataUsed_left(i_frame) >= settings.threshold_synch
-            %         while dataUsed_left(i_frame) > resting_level_left
-            %             i_frame = i_frame - 1;
-            %         end
             %             while dataUsed_left(i_frame) <= dataUsed_left(i_frame+1) && i_frame > 1
             %                 i_frame = i_frame - 1;
             %             end
-            while abs(diff([dataUsed_left(i_frame), dataUsed_left(i_frame+1)])) > 0.5 
+            while abs(diff([dataUsed_left(i_frame),dataUsed_left(i_frame-1)])) > 0.5 
                 i_frame = i_frame - 1;
             end
             start_kinetic_left = i_frame;
@@ -127,13 +141,10 @@ else % normal synch pulse
     % RIGHT
     for i_frame = 2 : n_frames-1
         if dataUsed_right(i_frame-1) <= settings.threshold_synch && dataUsed_right(i_frame) >= settings.threshold_synch
-            %         while dataUsed_right(i_frame) > resting_level_right && i_frame < n_frames_final
-            %             i_frame = i_frame - 1;
-            %         end
             %             while dataUsed_right(i_frame) <= dataUsed_right(i_frame+1) && i_frame > 1
             %                 i_frame = i_frame - 1;
             %             end
-            while abs(diff([dataUsed_left(i_frame), dataUsed_left(i_frame+1)])) > 0.5
+            while abs(diff([dataUsed_right(i_frame),dataUsed_right(i_frame-50)])) > 0.5
                 i_frame = i_frame - 1;
             end
             start_kinetic_right = i_frame;
@@ -161,41 +172,6 @@ else
 end
 
 temporal_diff = round(start_kinetic - start_kinematic);
-
-% if start_kinetic < 10 || start_kinematic < 10
-%     start_kinematic_left = find(data.LFIN2(:,3) > (data.LWCENTRE(:,3)+settings.height_pushrim), 1, "first");
-%     start_kinematic_right = find(data.RFIN2(:,3) > (data.RWCENTRE(:,3)+settings.height_pushrim), 1, "first");
-% 
-%     for i_frame = 2 : n_frames_final-1
-%         if dataUsed_left(i_frame-1) >= settings.threshold_synch && dataUsed_left(i_frame) <= settings.threshold_synch
-%             while dataUsed_left(i_frame) >= dataUsed_left(i_frame+1) && i_frame < n_frames_final-1
-%                 i_frame = i_frame + 1;
-%             end
-%             while dataUsed_left(i_frame) < -0.25 && i_frame < n_frames_final-1
-%                 i_frame = i_frame + 1;
-%             end
-%             start_kinetic_left = i_frame; 
-%             break; 
-%         end
-%     end
-%     for i_frame = 2 : n_frames_final-1
-%         if dataUsed_right(i_frame-1) >= settings.threshold_synch && dataUsed_right(i_frame) <= settings.threshold_synch
-%             while dataUsed_right(i_frame) >= dataUsed_right(i_frame+1) && i_frame < n_frames_final-1
-%                 i_frame = i_frame + 1;
-%             end
-%             while dataUsed_right(i_frame) < -0.25 && i_frame < n_frames_final-1
-%                 i_frame = i_frame + 1;
-%             end
-%             start_kinetic_right = i_frame; 
-%             break; 
-%         end
-%     end
-% 
-%     % calculating the temporal difference
-%     start_kinematic = round(mean([start_kinematic_right, start_kinematic_left]));
-%     start_kinetic = round(mean([start_kinetic_left, start_kinetic_right]));
-% end 
-
 
 %% Shifting data by the temporal difference 
 

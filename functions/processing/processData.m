@@ -5,7 +5,7 @@ subjNames = fieldnames(subjData);
 nSubj = numel(subjNames);
 fprintf('...start processing data...\n')
 
-for iSubj = 2%1:nSubj
+for iSubj = 1:nSubj
     conditions = fieldnames(subjData.(subjNames{iSubj}));
     nCondition = numel(conditions);
     fprintf(['...for ', subjNames{iSubj}, '\n'])
@@ -38,9 +38,9 @@ for iSubj = 2%1:nSubj
             data = interpolateAndFilterData(data);
 
             % synchronize data
-            settings.doPlot = 1; 
+%             settings.doPlot = 1; 
             data = synchData_WCU(data, settings);
-            settings.doPlot = 0; 
+%             settings.doPlot = 0; 
 %             data = synchData(data, settings);
 %             showRawData(data, [figureID,'...Synched'])
 

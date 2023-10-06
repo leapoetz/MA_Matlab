@@ -10,10 +10,10 @@ for iParameter = 1 : length(parameter_names)
 
     for iSide = 1 : length(sides)
         thisSide = sides{iSide};
-        nSubj = length(mean_curves.(parameter_name).(thisSide));
+        nSubj = size(mean_curves.(parameter_name).(thisSide),1);
 
         for iSubj = 1:nSubj
-            nCondition = width(mean_curves.(parameter_name).(thisSide));
+            nCondition = size(mean_curves.(parameter_name).(thisSide),2);
 
             for iCondition = 1:nCondition
 
