@@ -1,7 +1,12 @@
 function subjData = loadAndCreateSubjData(settings)
 %% create struct with subject et data from each day
 
-cd('data/raw_WCU');
+if settings.is_WCU
+    cd('data/raw/WCU');
+else
+    cd('data/raw/AB');
+end
+
 rawDataPath = pwd;
 subj = dir(rawDataPath);
 names    = {subj.name};

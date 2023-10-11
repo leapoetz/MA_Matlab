@@ -27,7 +27,7 @@ for iSubj = 2:nSubj
 
             parameter_names = fieldnames(this_cont_parameters);
 
-            for iParameter = 1% 1: length(parameter_names)
+            for iParameter = 2% 1: length(parameter_names)
                 parameter_name = parameter_names{iParameter};
 
                 for iSide = 1 %: length(sides)

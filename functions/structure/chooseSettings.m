@@ -3,7 +3,7 @@ function settings = chooseSettings(projectPath)
 settings.projectPath = projectPath;
 
 %% do stuff
-settings.doSave = 0;
+settings.doSave = 1;
 settings.doPlot = 0;
 
 %% hardware stuff

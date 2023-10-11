@@ -1,4 +1,4 @@
-function data_positive = cutAndAdjustData(data)
+function data_cut = cutAndAdjustData(data)
 
 n_frames = length(data.F_left); 
 threshold = 0.1; 
@@ -43,10 +43,10 @@ for iParameter = 1 : length(parameters)
 %             if min(data.(thisParameter)(:,iCoordinate),[], "omitnan") < -2
 %                 data_positive.(thisParameter)(:,iCoordinate) = - data.(thisParameter)(1:end_dynamic,iCoordinate);
 %             else
-                data_positive.(thisParameter)(:,iCoordinate) = data.(thisParameter)(1:end_dynamic,iCoordinate);
+                data_cut.(thisParameter)(:,iCoordinate) = data.(thisParameter)(1:end_dynamic,iCoordinate);
 %             end
         end
     else
-        data_positive.(thisParameter) = data.(thisParameter);
+        data_cut.(thisParameter) = data.(thisParameter);
     end
 end

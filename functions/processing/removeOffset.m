@@ -4,7 +4,7 @@ data_removed_offset = data;
 baseline_exists = false; 
 n_frames = length(data.M_left); 
 
-% split data in static and dynamic phase: 
+% -----> split data in static and dynamic phase: 
 
 %% STATIC
 

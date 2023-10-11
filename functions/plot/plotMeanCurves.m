@@ -1,4 +1,4 @@
-function plotMeanCurves(mean_curves)
+function plotMeanCurves(mean_curves, settings)
 
 %% predefs
 sides = {'left', 'right'};
@@ -31,7 +31,13 @@ for iParameter = 1 : length(parameter_names)
            end
         end
     end
-    
+    if settings.doSave
+        if settings.is_WCU
+            saveas( gcf, fullfile( settings.projectPath,['reports',filesep,'WCU',filesep], [parameter_name,'.png']) )
+        else
+            saveas( gcf, fullfile( settings.projectPath,['reports',filesep,'AB',filesep], [parameter_name,'.png']) )
+        end
+    end
 %     AllYLim = get(ax, 'YLim');
 %     AllYLimValue = cell2mat(AllYLim);
 %     newYLim = [min(min(AllYLimValue)), max(max(AllYLimValue))];

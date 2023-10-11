@@ -1,4 +1,4 @@
-function [means_per_condition, std_per_condition] = buildMeanCurves(cycle_parameters, settings)
+function mean_curves_per_condition = buildMeanCurves(cycle_parameters, settings)
 
 
 % predefs
@@ -37,7 +37,7 @@ for iSubj = 1:nSubj
                 end
 
                 % determine mean over all trials 
-                means_per_condition.(parameter_name).(thisSide){iSubj,iCondition} = mean(all_trials, 'omitnan');
+                mean_curves_per_condition.(parameter_name).(thisSide){iSubj,iCondition} = mean(all_trials, 'omitnan');
             end
         end
     end
@@ -49,9 +49,11 @@ fprintf('...finished building mean curves for each condition...\n')
 % bootstrapping
 
 if settings.doSave
-    cd(settings.projectPath);
-    cd('data/interim')
-    save('means_per_condition.mat', 'means_per_condition');
+    if settings.is_WCU
+        save( fullfile( settings.projectPath,['data',filesep,'processed',filesep,'WCU',filesep],'mean_curves_per_condition.mat'), 'mean_curves_per_condition' )
+    else
+        save( fullfile( settings.projectPath,['data',filesep,'processed',filesep,'AB',filesep],'mean_curves_per_condition.mat'), 'mean_curves_per_condition' )
+    end
 end
 
 end

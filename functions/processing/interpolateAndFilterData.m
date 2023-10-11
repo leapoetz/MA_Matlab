@@ -35,8 +35,8 @@ if duration_marker < duration_SW % marker data shorter than SW data
     data.F_right = data.F_right(1:end_frame_SW,:);
     data.M_left = data.M_left(1:end_frame_SW,:);
     data.M_right = data.M_right(1:end_frame_SW,:);
-%     data.Speed_left = data.Speed_left(1:end_frame_SW);
-%     data.Speed_right = data.Speed_right(1:end_frame_SW);
+    data.Speed_left = data.Speed_left(1:end_frame_SW);
+    data.Speed_right = data.Speed_right(1:end_frame_SW);
     data.Angle_left = data.Angle_left(1:end_frame_SW);
     data.Angle_right = data.Angle_right(1:end_frame_SW);
 
@@ -62,8 +62,8 @@ F_left_interpolated = interp1(t_SW, data.F_left, t_marker);
 F_right_interpolated = interp1(t_SW, data.F_right, t_marker);
 M_left_interpolated = interp1(t_SW, data.M_left, t_marker);
 M_right_interpolated = interp1(t_SW, data.M_right, t_marker);
-% data_filtered_interpolated.Speed_left = interp1(t_SW, data.Speed_left, t_marker);
-% data_filtered_interpolated.Speed_right = interp1(t_SW, data.Speed_right, t_marker);
+data_filtered_interpolated.Speed_left = interp1(t_SW, data.Speed_left, t_marker);
+data_filtered_interpolated.Speed_right = interp1(t_SW, data.Speed_right, t_marker);
 data_filtered_interpolated.Angle_left = interp1(t_SW, data.Angle_left, t_marker);
 data_filtered_interpolated.Angle_right = interp1(t_SW, data.Angle_right, t_marker);
 

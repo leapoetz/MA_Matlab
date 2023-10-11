@@ -12,11 +12,11 @@ Speed_left = subjData.kinetic.left.speed;
 Speed_right = subjData.kinetic.right.speed;
 
 % % change signs
-F_left(:,3) = - F_left(:,3); 
-F_left(:,2) = - F_left(:,2); 
-F_right(:,2) = - F_right(:,2); 
-M_left(:,3) = M_left(:,3); 
-M_left(:,2) = - M_left(:,2); 
+% F_left(:,3) = - F_left(:,3); 
+% F_left(:,2) = - F_left(:,2); 
+% F_right(:,2) = - F_right(:,2); 
+% M_left(:,3) = M_left(:,3); 
+% M_left(:,2) = - M_left(:,2); 
 
 % kinematic
 LFIN2_markerNr = find(strcmp(subjData.kinematic.markerNames,'LFIN2'));

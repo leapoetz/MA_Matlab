@@ -27,31 +27,32 @@ for iSubj = 1:nSubj
             % make all data positive
             data = cutAndAdjustData(data); 
             
-%             showRawData(data, [figureID,'   Raw Data'])
+            %  showRawData(data, [figureID,'   Raw Data'])
 
             % remove offset -> does not work yet 
             data = removeOffset(data, settings, (subjNames{iSubj}));
 
-%             showRawData(data, [figureID,'... removed'])
+            % showRawData(data, [figureID,'... removed Offset'])
 
             % interpolate and filter data
             data = interpolateAndFilterData(data);
 
-            % synchronize data
-%             settings.doPlot = 1; 
-            data = synchData_WCU(data, settings);
-%             settings.doPlot = 0; 
-%             data = synchData(data, settings);
-%             showRawData(data, [figureID,'...Synched'])
-
-            [cyles_to_analyze, n_cycles] = detectCycles_WCU(data, settings);
-%             [cyles_to_analyze, n_cycles] = detectCycles(data, settings);
+            if settings.is_WCU
+                data = synchData_WCU(data, settings);
+                [cyles_to_analyze, n_cycles] = detectCycles_WCU(data, settings);
+            else
+                % synchronize data
+                data = synchData(data, settings);
+                % detect cycles
+                [cyles_to_analyze, n_cycles] = detectCycles(data, settings);
+            end
+            %             showRawData(data, [figureID,'...Synched'])           
             % add cycle parameter to data
-            data.cycles = cyles_to_analyze; 
-            data.nCycles = n_cycles; 
+            data.cycles = cyles_to_analyze;
+            data.nCycles = n_cycles;
 
             % save data for eacht trial
-            data_processed.(subjNames{iSubj}).(conditions{iCondition}).(trials{iTrial}) = data; 
+            data_processed.(subjNames{iSubj}).(conditions{iCondition}).(trials{iTrial}) = data;
         end
         
     end
@@ -59,9 +60,11 @@ for iSubj = 1:nSubj
 end
 
 if settings.doSave
-    cd(settings.projectPath);
-    cd('data/interim')
-    save('data_processed.mat', 'data_processed');
+    if settings.is_WCU
+        save( fullfile( settings.projectPath,['data',filesep,'interim',filesep,'WCU',filesep],'data_processed.mat'), 'data_processed' )
+    else
+        save( fullfile( settings.projectPath,['data',filesep,'interim',filesep,'AB',filesep],'data_processed.mat'), 'data_processed' )
+    end
 end
 
 

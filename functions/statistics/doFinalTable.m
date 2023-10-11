@@ -1,4 +1,4 @@
-function T_results = doFinalTable(results_descriptive_stats)
+function T_results = doFinalTable(results_descriptive_stats, settings)
 
 %% predefs
 fprintf('...do final results table...\n')
@@ -37,7 +37,14 @@ for iParameter = 1 : length(parameter_names)
     T_results.(parameter_name) = T_parameter;
 end
 
-
 fprintf('...finished descriptive statistics for each condition...\n')
+
+if settings.doSave
+    if settings.is_WCU
+        save( fullfile( settings.projectPath,['data',filesep,'processed',filesep,'WCU',filesep],'T_results.mat'), 'T_results' )
+    else
+        save( fullfile( settings.projectPath,['data',filesep,'processed',filesep,'AB',filesep],'T_results.mat'), 'T_results' )
+    end
+end
 
 end
