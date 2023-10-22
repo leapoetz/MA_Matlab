@@ -15,9 +15,9 @@ for i_condition = 1 : length(T_results_each_condition.Condition)
     left_stds = [T_results_each_condition.(4){i_condition}, T_results_each_condition.(8){i_condition}]; 
     right_stds = [T_results_each_condition.(5){i_condition}, T_results_each_condition.(9){i_condition}]; 
 
-    l1 = errorbar(positions(i_condition,:), [lefts(1), rights(1)],[left_stds(1), right_stds(1)], 'square-', 'MarkerSize', 6, 'Color', blue, MarkerFaceColor=blue); 
+    l1 = errorbar(positions(i_condition,:), [lefts(1), rights(1)],[left_stds(1), right_stds(1)], 'square-', 'MarkerSize', 8, 'Color', blue, MarkerFaceColor=blue); 
     hold on
-    l2 = errorbar(positions(i_condition,:), [lefts(2), rights(2)],[left_stds(2), right_stds(2)], 'o-', 'MarkerSize', 6, 'Color', red, MarkerFaceColor=red); 
+    l2 = errorbar(positions(i_condition,:), [lefts(2), rights(2)],[left_stds(2), right_stds(2)], 'o-', 'MarkerSize', 8, 'Color', red, MarkerFaceColor=red); 
 
 end 
 
@@ -30,6 +30,6 @@ xlim([0 13])
 ylabel('PFA Angle (°)')
 xlabel('Condition')
 legend([l1, l2], 'Kinetic PFA', 'Kinematic PFA')
-fontsize(a, 14, "points")
+fontsize(a, 16, "points")
 
 end

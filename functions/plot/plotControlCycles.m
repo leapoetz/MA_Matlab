@@ -9,7 +9,7 @@ fprintf('...start plotting to check cycles...\n')
 sides = {'left', 'right'};
 
 
-for iSubj = 2:nSubj
+for iSubj = 1%:nSubj
     conditions = fieldnames(cont_parameters.(subjNames{iSubj}));
     nCondition = numel(conditions);
     fprintf(['...for ', subjNames{iSubj}, '\n'])
@@ -27,10 +27,10 @@ for iSubj = 2:nSubj
 
             parameter_names = fieldnames(this_cont_parameters);
 
-            for iParameter = 2% 1: length(parameter_names)
+            for iParameter = 4% 1: length(parameter_names)
                 parameter_name = parameter_names{iParameter};
 
-                for iSide = 1 %: length(sides)
+                for iSide = 2%: length(sides)
                     thisSide = sides{iSide};
 
                     figure("Name",['Subj',num2str(iSide),' Condition',num2str(iCondition),' Trial',num2str(iTrial),' ',num2str(thisSide)])

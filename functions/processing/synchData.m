@@ -218,9 +218,8 @@ if settings.doPlot
     xline(start_kinetic_left, 'b')
     xlabel('Frames')
     ylabel('Force (N)')
-    title('Force')
+    title('F_y')
     legend('Left', 'Right')
-    xlim([0 2500])
 
     subplot(3,1,2);
     plot(data.LFIN2(:,3))
@@ -232,7 +231,6 @@ if settings.doPlot
     ylabel('Position (mm)')
     title('2nd MPJ Marker (z coordinate)')
     legend('Left', 'Right')
-    xlim([0 2500])
 
     subplot(3,1,3)
     yyaxis left
@@ -250,7 +248,8 @@ if settings.doPlot
     xline(start_kinetic-temporal_diff, '-')
     xline(start_kinematic, '--')
     title('Synchronised')
-    legend('Left', 'Right')
-    xlim([0 2500])
+    legend('F_y left', 'F_y right', '2nd MPJ left', '2nd MPJ right')
+
+    sgtitle('Synchronisation of kinetic and kinematic data')
 end
 end

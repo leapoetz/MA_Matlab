@@ -27,7 +27,7 @@ for iSubj = 1:nSubj
             % make all data positive
             data = cutAndAdjustData(data); 
             
-            %  showRawData(data, [figureID,'   Raw Data'])
+%             showRawData(data, [figureID,'   Raw Data'])
 
             % remove offset -> does not work yet 
             data = removeOffset(data, settings, (subjNames{iSubj}));

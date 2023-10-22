@@ -183,7 +183,7 @@ for i_event = 1 : length(events_left)
 end
 
 if settings.doPlot
-    figure()
+    figure('Name','Event Detection')
     subplot(2,1,1)
     plot(data_left)
     hold on
@@ -206,6 +206,8 @@ if settings.doPlot
         xline(events{i_event,1})
     end
     legend('Left', 'Right')
+    title('2nd MPJ')
+    sgtitle('Determination of the propulsion cycles')
 end
 
 end

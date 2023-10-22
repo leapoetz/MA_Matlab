@@ -1,7 +1,7 @@
 function results_stats = doDescriptiveStats(mean_curves, settings)
 
-dominantSides = {'right', 'right', 'right', 'right', 'right','left','right','right'}; 
-nonDominantSides = {'left','left','left','left','left','right','left','left'}; 
+dominantSides = {'right', 'right', 'right', 'right', 'right','left','right','right','right','left'}; 
+nonDominantSides = {'left','left','left','left','left','right','left','left','left','right'}; 
 
 %% predefs
 fprintf('...do descriptive statistics for each condition...\n')
@@ -24,12 +24,17 @@ for iParameter = 1 : length(parameter_names)
 
                 mean_value = mean(thisCurve);
                 max_value = max(thisCurve);
-                std_value = std(thisCurve);
+%                 std_value = std(thisCurve);
 
 
                 stat_matrix.Mean(iSubj,iCondition) = mean_value;
                 stat_matrix.Max(iSubj,iCondition) = max_value;
-                stat_matrix.Std(iSubj,iCondition) = std_value;
+%                 stat_matrix.Std(iSubj,iCondition) = std_value;
+
+%                 if strcmp(parameter_name,'PFA_kinematic')
+%                     results_stats.Contact_angle.(thisSide)(iSubj,iCondition) = thisCurve(1) - thisCurve(end); 
+%                 end 
+
             end
         end
         results_stats.(parameter_name).(thisSide) = stat_matrix;

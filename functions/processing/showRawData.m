@@ -71,4 +71,6 @@ title('WCENTRE (z-coordinate)')
 xlabel('Frames')
 ylabel('Position (mm)')
 
+sgtitle('Raw Data')
+
 end

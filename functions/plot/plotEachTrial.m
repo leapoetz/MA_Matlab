@@ -8,12 +8,12 @@ nSubj = numel(subjNames);
 
 sides = {'left', 'right'};
 
-for iSubj = 2%1:nSubj
+for iSubj = 1:nSubj
     conditions = fieldnames(continous_parameters.(subjNames{iSubj}));
     nCondition = numel(conditions);
     fprintf(['...for ', subjNames{iSubj}, '\n'])
 
-    for iCondition = 1:nCondition
+    for iCondition = 1%1:nCondition
         fprintf(['...for ', conditions{iCondition}, '\n'])
 
         trials = fieldnames(continous_parameters.(subjNames{iSubj}).(conditions{iCondition}));
@@ -31,6 +31,7 @@ for iSubj = 2%1:nSubj
                 plot(thisData)
                 hold on
             end
+            legend(string(1:nTrials))
         end
     end
 end 

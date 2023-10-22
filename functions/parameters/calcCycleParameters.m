@@ -47,7 +47,7 @@ for iSubj = 1:nSubj
                         old_interval = 1 : length(thisInterval);
 
                         % time normalization to 1-100% of push phase
-                        addZeros = max(l) - length(thisInterval);
+%                         addZeros = max(l) - length(thisInterval);
 %                         cycles_per_trial(:,iCycle) = [this_cont_parameters.(parameter_name).(thisSide)(thisInterval); zeros(addZeros,1)];
                         cycles_per_trial(:,iCycle) = timeNormalization4vector(this_cont_parameters.(parameter_name).(thisSide)(thisInterval),old_interval,goalLength);
                     end

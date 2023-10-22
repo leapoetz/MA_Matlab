@@ -3,11 +3,14 @@ function settings = chooseSettings(projectPath)
 settings.projectPath = projectPath;
 
 %% do stuff
-settings.doSave = 1;
+settings.doSave = 0;
 settings.doPlot = 0;
 
 %% hardware stuff
 settings.windowSize = [1280 720];
+
+%% group stuff
+settings.is_WCU = 0; 
 
 %% criteria stuff
 settings.threshold = 5; % N

@@ -27,13 +27,13 @@ for iSubj = 1:nSubj
             % kinematic PFA (left and right) 
             parameters.PFA_kinematic = calcDynamicKinematicPFA(data,settings); 
 
-%             % force in x-direction
-%             parameters.F_x.left = data.F_left(:,1); 
-%             parameters.F_x.right = data.F_right(:,1); 
+            % force in x-direction
+            parameters.F_x.left = data.F_left(:,1); 
+            parameters.F_x.right = data.F_right(:,1); 
 
-%             % force in y-direction
-%             parameters.F_y.left = data.F_left(:,2); 
-%             parameters.F_y.right = data.F_right(:,2);
+            % force in y-direction
+            parameters.F_y.left = data.F_left(:,2); 
+            parameters.F_y.right = data.F_right(:,2);
 
             % total force 
             parameters.F_tot.left = sqrt(data.F_left(:,1).^2 + data.F_left(:,2).^2 + data.F_left(:,3).^2); 
@@ -61,7 +61,7 @@ for iSubj = 1:nSubj
 
             % exact radial force
             parameters.F_rad.left =  - cosd(parameters.PFA_kinematic.left)' .* data.F_left(:,1) - sind(parameters.PFA_kinematic.left)' .* data.F_left(:,2);
-            parameters.F_rad.right = sind(parameters.PFA_kinematic.right)' .* data.F_right(:,1) - cosd(parameters.PFA_kinematic.right)' .* data.F_right(:,2);
+            parameters.F_rad.right = - cosd(parameters.PFA_kinematic.right)' .* data.F_right(:,1) - sind(parameters.PFA_kinematic.right)' .* data.F_right(:,2);
 
             % speed
             parameters.Speed.left = data.Speed_left; 

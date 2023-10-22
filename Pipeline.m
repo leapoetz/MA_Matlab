@@ -12,8 +12,7 @@ settings = chooseSettings(projectPath);
 
 %% load data
 redo = 0; % use redo if data folder was updated, else load current files
-skipProcessing = 0; 
-settings.is_WCU = 1; % 0 = AB, 1 = WCU
+skipProcessing = 1;  
 
 if skipProcessing
     if settings.is_WCU
@@ -48,7 +47,7 @@ end
 
 % cycle parameters
 cycle_parameters = calcCycleParameters(continous_parameters, cycles, settings); 
-% plotEachTrial(cycle_parameters,'F_tan')
+% plotEachTrial(cycle_parameters,'PFA_kinematic')
 
 % build means 
 mean_curves_per_condition = buildMeanCurves(cycle_parameters, settings); 
@@ -62,34 +61,12 @@ results_descriptive_stats = doDescriptiveStats(mean_curves_per_condition, settin
 T_final = doFinalTable(results_descriptive_stats, settings); 
 
 %% statistics  
+
 close all 
+load("data\processed\mean_curves_bothGroups.mat")
 
 parameters = {'F_tot', 'F_tan','F_rad'};
 side = 'left'; 
 plotWithConfidenceBands(mean_curves_per_condition,parameters,side, settings)
 
-
-% one factorial anova 
-[p,t,stats] = anova1(results_descriptive_stats.Speed.left.Max); % are there differences between the three conditons? 
-% if yes, which differences exist?
-[c,m,h,gnames] = multcompare(stats);
-% 
-% % manova -> independent variable=gripping position, dependent variables=
-% % Ftot, Ftan, Frad
-% 
-% species = [repmat("Front",8,1);repmat("Middle",8,1);repmat("Rear",8,1)]; 
-% meas = [results_descriptive_stats.F_tot.left.Max(:),results_descriptive_stats.F_tan.left.Max(:),results_descriptive_stats.F_rad.left.Max(:)]; 
-% 
-% t = table(species,meas(:,1),meas(:,2),meas(:,3),...
-% 'VariableNames',{'species','meas1','meas2','meas3'});
-% Meas = table([1 2 3]','VariableNames',{'Measurements'});
-% 
-% rm = fitrm(t,'meas1-meas3~species','WithinDesign',Meas);
-% 
-% [ranovatbl,A,C,D] = ranova(rm); 
-% [ranovatbl,A,C,D] = manova(rm); 
-% manova(rm,'By','species')
-% 
-% % one way multivariate analysis of variances 
-% [d, p, stats] = manova1(meas, species); 
 
